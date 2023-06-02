@@ -62,7 +62,20 @@ def reduce_graph(graph):
 
     return graph_aux
 
-
+def print_solution(original_graph, flow_graph):
+    max_flow = 0
+    print("Solution: ")
+    for (node, adjacency) in flow_graph.adjacency_list.items():
+        if node in original_graph.adjacency_list:
+            for (adj, info) in adjacency.items():
+                if adj in original_graph.adjacency_list[node]:
+                    flow = info['capacidad'] + original_graph.adjacency_list[node][adj]['demanda']
+                    if flow > 0:
+                        print("{} -> {} = {}".format(node, adj, flow))
+                    if node == SOURCE_NAME:    
+                        max_flow += flow
+    
+    print("Max flow: {}".format(max_flow))
 
 if __name__ == "__main__":
     parser = build_parser()
@@ -75,32 +88,10 @@ if __name__ == "__main__":
         graph.add_edge(source_node, destination_node, capacity=int(capacity), demand=int(demand))
     graph.add_edge(SINK_NAME, None, 0, 0)
 
-    print(graph)
-
     reduced_graph = reduce_graph(graph)
 
-    print(reduced_graph)
-
-
     residual_graph = make_residual_graph(reduced_graph)
-
-    print(residual_graph)
     
-    print(max_flow)
-    max_flow = max_flow(reduced_graph, residual_graph, SOURCE_NAME_AUX, SINK_NAME_AUX)
-    print(max_flow)
+    flow_graph = max_flow(reduced_graph, residual_graph, SOURCE_NAME_AUX, SINK_NAME_AUX)
 
-    # SIMPLE TEST
-
-    # reduced_graph = Digraph()
-    # reduced_graph.add_edge(SOURCE_NAME, 'B', 3, 0)
-    # reduced_graph.add_edge(SOURCE_NAME, 'C', 3, 0)
-    # reduced_graph.add_edge('B', 'C', 5, 0)
-    # reduced_graph.add_edge('B', 'D', 3, 0)
-    # reduced_graph.add_edge('C', 'E', 5, 0)
-    # reduced_graph.add_edge('D', 'E', 4, 0)
-    # reduced_graph.add_edge('D', SINK_NAME, 5, 0)
-    # reduced_graph.add_edge('E', SINK_NAME, 5, 0)
-    # reduced_graph.add_edge(SINK_NAME, None, 0, 0)
-
-    # max_flow = max_flow(reduced_graph, residual_graph, SOURCE_NAME, SINK_NAME)
+    print_solution(graph, flow_graph)
