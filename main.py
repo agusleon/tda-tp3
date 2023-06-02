@@ -73,6 +73,7 @@ if __name__ == "__main__":
     for edge in net:
         source_node, destination_node, capacity, demand = edge
         graph.add_edge(source_node, destination_node, capacity=int(capacity), demand=int(demand))
+    graph.add_edge(SINK_NAME, None, 0, 0)
 
     print(graph)
 
@@ -80,8 +81,26 @@ if __name__ == "__main__":
 
     print(reduced_graph)
 
+
     residual_graph = make_residual_graph(reduced_graph)
 
     print(residual_graph)
+    
+    print(max_flow)
+    max_flow = max_flow(reduced_graph, residual_graph, SOURCE_NAME_AUX, SINK_NAME_AUX)
+    print(max_flow)
 
-    max_flow(reduced_graph, residual_graph, SOURCE_NAME_AUX, SINK_NAME_AUX)
+    # SIMPLE TEST
+
+    # reduced_graph = Digraph()
+    # reduced_graph.add_edge(SOURCE_NAME, 'B', 3, 0)
+    # reduced_graph.add_edge(SOURCE_NAME, 'C', 3, 0)
+    # reduced_graph.add_edge('B', 'C', 5, 0)
+    # reduced_graph.add_edge('B', 'D', 3, 0)
+    # reduced_graph.add_edge('C', 'E', 5, 0)
+    # reduced_graph.add_edge('D', 'E', 4, 0)
+    # reduced_graph.add_edge('D', SINK_NAME, 5, 0)
+    # reduced_graph.add_edge('E', SINK_NAME, 5, 0)
+    # reduced_graph.add_edge(SINK_NAME, None, 0, 0)
+
+    # max_flow = max_flow(reduced_graph, residual_graph, SOURCE_NAME, SINK_NAME)

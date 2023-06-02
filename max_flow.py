@@ -13,7 +13,7 @@ def max_flow(graph, residual_graph, s, t):
             residual_graph.adjacency_list[v][u]['capacidad'] -= flow
         path = bfs(graph, residual_graph, s, t)
     print("Final graph: ", residual_graph)
-    # return sum(residual_graph[s][i] for i in range(n))
+    return sum(residual_graph.adjacency_list[s][v]['capacidad'] for v,info in residual_graph.adjacency_list[s].items())
 
 # find path by using BFS
 def bfs(graph, residual, s, t):

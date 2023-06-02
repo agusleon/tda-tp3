@@ -6,7 +6,10 @@ class Digraph:
         if source in self.adjacency_list:
             self.adjacency_list[source][destination] = {"capacidad":capacity, "demanda":demand}
         else:
-            self.adjacency_list[source] = {destination:{"capacidad":capacity, "demanda":demand}}
+            if destination is None:
+                self.adjacency_list[source] = {}
+            else:
+                self.adjacency_list[source] = {destination:{"capacidad":capacity, "demanda":demand}}
     
     def get_neighbors(self, vertex):
         if vertex in self.adjacency_list:
